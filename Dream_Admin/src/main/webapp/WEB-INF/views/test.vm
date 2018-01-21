@@ -1,0 +1,35 @@
+<style>
+    table
+    {
+        border : 2px solid #AAA ;
+    }
+    td
+    {
+        border : 1px solid #AAA ;
+        width : 100px ;
+        height : 40px ;
+    }
+</style>
+ 
+<html>
+<head>
+    <title>Velocity Page Test</title>
+</head>
+<body>
+<h2> Velocity Page Test </h2>
+<table>
+    <tr>
+        <td> ID </td ><td> 이름 </td ><td> 저자 </td><td> 내용 </td><td> 날짜 </td><td> 정보 </td><td> 빌린놈 </td>
+    </tr>
+    #foreach($book in $books)
+        <tr>
+            <td> $book.id </td ><td> $book.name </td><td> $book.author </td>
+            <td> $book.comment </td><td> $book.publishDate </td>
+            <td> $book.status </td><td></td>
+        </tr>
+    #end
+ 
+</table>
+</body>
+</html>
+[출처] [Java] SpringMVC Views for gradle(IntelliJ)...(JSTL, Velocity, Freemarker)|작성자 물먹고하자

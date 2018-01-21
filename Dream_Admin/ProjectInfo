@@ -1,0 +1,60 @@
+#Dream_Admin Development Environment 
+
+1. Environment O/S
+	- windows 8.1
+
+2. Environment Tools
+	- STS : 3.9.2.RELEASE
+		- Project : Gradle (STS) Project
+	- WS : Apache
+	- WAS : Apache tomcat 8.5
+
+3. Environment Framework
+	- Spring Framework : 4.3.3.RELEASE
+	- MyBatis : 3.2.8
+
+4. View Template
+	- Velocity
+
+5. Environment Language
+	- Style :  Bootstrap, jQgrid
+	- Front-End : javaScript, jQuery
+	- Back-End : Servlet(3.1) Java(jdk 1.8.0_91)
+
+6. DBMS
+	- Oracle 11g Express Edition
+
+7. Library
+ 	- ojdbc6.jar 
+ 	- 엑셀화 관련 및 cvs 파일처리 라이브러리
+ 	- 스케줄러 관련 라이브러리
+ 	- 향후 추가
+ 	- 로깅 및 파일화
+
+8. Build Tool
+	- Gradle 3.9
+
+9. Environment Plugin
+	- egit
+	- nodclipse? : javascript 및 jquery 자동완성 사용 후 판단할것
+
+10. Test Tools
+ 	- JUnit : 4.12
+ 	- MockMvc
+
+11.Configuration Management
+	- GitLap
+
+12. Sub Development Tools
+	- ER-diagram : eXERD
+	- DB development : Toad for Oracle 12.12
+
+13. Run Enviroment
+	- Chrome
+	- IE 9~
+
+14.Continuous Integration Tool
+	- Jenkins
+
+15.Hosting
+	- AWS
