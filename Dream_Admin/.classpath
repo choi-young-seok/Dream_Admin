@@ -131,5 +131,6 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Dream_Admin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
