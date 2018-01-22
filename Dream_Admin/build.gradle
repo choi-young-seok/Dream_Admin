@@ -1,111 +1,132 @@
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
+apply plugin: 'eclipse'
 apply plugin: 'war'
- 
+
+compileJava.options.encoding = 'UTF-8'
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
- 
 version = '1.0'
- 
-//¹öÀü °ü¸®
-def version = [
-    spring: '4.3.4.RELEASE',
-    servletAPI: '3.1.0',
-    commonsCollections: '3.2.1',
-    junit: '4.12',
-    slf4j: '1.7.12'
-]
- 
-//ÇÁ·ÎÁ§Æ®¸¦ ºôµåÇÏ°í ³ª¸é ÇÁ·ÎÁ§Æ® Á¤º¸µµ °°ÀÌ Áö¿öÁö´Âµ¥, Gradle ÇÁ·ÎÁ§Æ®ÀÓÀ» ÀÎ½Ä ½ÃÄÑÁØ´Ù
-//ÇÁ·ÎÁ§Æ® ¿ìÅ¬¸¯½Ã [run as] - [gradle build]°¡ Ç¥½ÃµÇµµ·Ï ÇØÁØ´Ù
+project.webAppDirName = 'WebContent'
+
+war.archiveName "ROOT.war"
+
 eclipse {
-    project.natures "org.springsource.ide.eclipse.gradle.core.nature"
-    wtp {
-        facet {
-            facet name: 'jst.web', version: '3.1' // Servlet Spec version ÁöÁ¤
-            facet name: 'jst.java', version: '1.8' //Java version ÁöÁ¤
-        }
-    }
+	wtp {
+		facet {
+			facet name: 'jst.web', version: '3.0'
+			facet name: 'jst.java', version: '1.8'
+			facet name: 'wst.jsdt.web' , version: '1.0'   // Javascript ì§€ì •, 1.0
+		}
+	}
 }
- 
-//jar ÆÄÀÏ¿¡ ´ëÇØ¼­ ¼³Á¤ÇÑ´Ù
+
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart',
-                   'Implementation-Version': version
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
     }
-    //manifest : MANIFEST.MF ÆÄÀÏ¿¡ µé¾î°¥ ¼Ó¼º=°ª Á¤º¸¸¦ ¼³Á¤ÇÑ´Ù. ÀÌ ÆÄÀÏÀº jar ÆÄÀÏ ¾È¿¡ META-INF¿¡ µé¾î°£´Ù.
-    
 }
- 
-//ÀÇÁ¸ ¶óÀÌºê·¯¸®¸¦ °¡Á®¿Ã ÀúÀå¼Ò ¼³Á¤
+
 repositories {
     mavenCentral()
-    //mavenCentral() : Maven Áß¾Ó ¼­¹ö¸¦ ÀúÀå¼Ò·Î ÁöÁ¤ÇÑ´Ù. ¼­¹öÀÇ ±âº» URLÀº http://repo1.maven.org/maven2/ÀÌ´Ù.
+	maven { url "http://repo.spring.io/libs-release" }
 }
- 
-//ÀÇÁ¸¼º ¶óÀÌºê·¯¸® ÁÖÀÔ
-//¿©±â¿¡ ÀÇÁ¸¼º Ãß°¡ÇØÁØ ¶óÀÌºê·¯¸®µéÀÌ ÀÚµ¿À¸·Î ºôµåµÈ´Ù.
+
+def compilelib = [
+	
+		"spring": ['org.springframework:spring-webmvc:4.1.2.RELEASE',
+					'org.springframework:spring-context:4.1.2.RELEASE',
+					'org.springframework:spring-context-support:4.1.2.RELEASE',//ë²¨ë¡œì‹œí‹° ì¶”ê°€
+					'org.springframework:spring-oxm:4.1.2.RELEASE',//XML,JSON ì¶”ê°€ ë•Œë¬¸ì—. 
+					'org.springframework:spring-jdbc:4.1.2.RELEASE', //MyBatis ì¶”ê°€
+					'org.springframework:spring-tx:4.1.2.RELEASE' //MyBatis ì¶”ê°€
+			],
+		
+		"aop": ['cglib:cglib-nodep:2.2.2', // Spring 3.2.x ì´ìƒì—ì„œëŠ” ë¹¼ë„ ëœë‹¤. 
+			],
+		
+		"Mybatis": ['org.mybatis:mybatis:3.2.2', //MyBatis ì¶”ê°€           
+					'org.mybatis:mybatis-spring:1.2.0', //MyBatis ì¶”ê°€         
+					//'mysql:mysql-connector-java:5.1.26', //MyBatis ì¶”ê°€          
+			],
+		
+		"Velocity": ['org.apache.velocity:velocity:1.7', //ë²¨ë¡œì‹œí‹° ì¶”ê°€
+					 'velocity-tools:velocity-tools:2.0-beta1',
+					 'commons-digester:commons-digester:2.1'				 
+			],
+		
+		"XmlJson": ['com.thoughtworks.xstream:xstream:1.4.7',//XMLíƒ€ì…ì¶”ê°€
+					'com.fasterxml.jackson.core:jackson-databind:2.5.0-rc1',//JSON íƒ€ì…ì¶”ê°€
+					'com.fasterxml.jackson.core:jackson-annotations:2.6.3',
+					'castor:castor:1.0',//unmarshal
+					'org.codehaus.castor:castor:1.2'
+			],		
+		
+		"etc": ['commons-logging:commons-logging:1.2',
+				'ch.qos.logback:logback-classic:1.0.6',
+				'org.slf4j:slf4j-api:1.7.6',
+				'commons-dbcp:commons-dbcp:1.4',	
+				'org.projectlombok:lombok:1.14.8',
+				'commons-fileupload:commons-fileupload:1.3.1', // íŒŒì¼ì—…ë¡œë“œ
+				'javax.validation:validation-api:1.1.0.Final' // ë°¸ë¦¬ë°ì´ì…˜
+			]	
+	]
+
+sourceSets {
+	main {
+		resources {
+			//include '/WebContent/WEB-INF/lib/**'  // jenkis ì˜¤ë¥˜ ë•Œë¬¸ì— ì¶”ê°€..  ì™¸ë¶€ JaríŒŒì¼ ì¶”ê°€ ë•Œë¬¸ì—.. 
+			//include 'com/air/interpark/**'
+			 
+			//exclude '/WebContent/WEB-INF/lib/**'
+			//exclude '/WebContent/**'
+		}
+	}
+}
+
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-
-    compile "org.springframework:spring-core:${version.spring}",
-            "org.springframework:spring-web:${version.spring}",
-            "org.springframework:spring-webmvc:${version.spring}",
-            "org.springframework:spring-beans:${version.spring}",
-            "org.springframework:spring-jdbc:${version.spring}",
-            "org.springframework:spring-expression:${version.spring}",
-            "org.springframework:spring-context-support:${version.spring}",
-            "org.springframework:spring-aop:${version.spring}",
-            "mysql:mysql-connector-java:5.1.39",
-            "org.mybatis:mybatis-spring:1.3.1",
-            "org.mybatis:mybatis:3.4.1"
-
-    compile "org.aspectj:aspectjrt:${version.aspectj}",
-            "org.aspectj:aspectjtools:${version.aspectj}",
-            "org.aspectj:aspectjweaver:${version.aspectj}"
-
-    compile("org.springframework:spring-context:${version.spring}") {
-        exclude group: 'commons-logging',
-                module: 'commons-logging'
-    }
-
-    testCompile "org.springframework:spring-test:${version.spring}"
-    testCompile "junit:junit:${version.junit}"
-
-    compile "org.slf4j:slf4j-api:${version.slf4j}"
-    runtime "org.slf4j:jcl-over-slf4j:${version.slf4j}",
-            "org.slf4j:slf4j-log4j12:${version.slf4j}"
-    runtime("log4j:log4j:1.2.17") {
-        exclude group: 'javax.mail', module: 'mail'
-        exclude group: 'javax.jms', module: 'jms'
-        exclude group: 'com.sun.jdmk', module: 'jmxtools'
-        exclude group: 'com.sun.jmx', module: 'jmxri'
-    }
-
-    providedCompile "javax.servlet:javax.servlet-api:3.0.1",
-            "javax.servlet.jsp:jsp-api:2.2"
-
-    runtime "javax.servlet:jstl:1.1.2"
-
-    compile "org.projectlombok:lombok:1.16.16"
-
-    compile "com.fasterxml.jackson.core:jackson-core:${version.jackson}",
-            "com.fasterxml.jackson.core:jackson-databind:${version.jackson}"
+	compile compilelib.spring, compilelib.Mybatis, compilelib.Velocity, compilelib.XmlJson, compilelib.etc	
+	providedCompile "javax.servlet:javax.servlet-api:3.0.1"	
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'	
+	testCompile 'org.springframework:spring-test:4.1.2.RELEASE',compilelib.aop, compilelib.Velocity, compilelib.XmlJson	
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+	runtime "javax.servlet:jstl:1.2"
+	
+	compile fileTree(dir: 'WebContent/WEB-INF/lib' , include: '*.jar')
 }
- 
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8' //ÀÎÄÚµùÀ» UTF-8·Î ÅëÀÏ 
- 
-//test Á¤º¸¸¦ ¼³Á¤ÇÑ´Ù
+
+/*
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+			include '/WebContent/WEB-INF/lib'
+	   }
+   }
+}
+*/
+
+// logback(slf4j)ë¥¼ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸ì— ëª¨ë“  ì˜ì¡´ì„±ì—ì„œ commons-loggingëŠ” ì œì™¸
+[configurations.runtime, configurations.default]*.exclude(module: 'commons-logging')
+
+// JAVA ì»´íŒŒì¼ì‹œ ì¸ì½”ë”© ì„¤ì •
+ [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
 test {
     systemProperties 'property': 'value'
 }
- 
-//¾ÆÄ«ÀÌºêÆÄÀÏ(.jar) ¹èÆ÷¸¦ ¼³Á¤ÇÑ´Ù
+
 uploadArchives {
     repositories {
        flatDir {
            dirs 'repos'
        }
     }
+}
+
+war {
+	exclude 'WEB-INF/lib/**'
+	exclude 'resources/**'
+	//exclude 'WEB-INF/classes/**'
+	//include 'resources/**'
 }
